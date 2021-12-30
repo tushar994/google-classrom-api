@@ -17,4 +17,6 @@ yarn install
 yarn start
 ```
 
-And the application should run!
+And the application will run!
+
+**Note that to use the application with your own email, you will have to be added to the project as a testing user, so please mail `tkumar994@gmail.com`, asking to be added as a testing user to the app. after being added, you will be able to log in**
