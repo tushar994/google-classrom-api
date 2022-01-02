@@ -37,3 +37,5 @@ And the application will run on port 3000.
 
 
 **Note that to use the application with your own email using my api key and client id, you will have to be added to the project as a testing user, so please mail `tkumar994@gmail.com`, asking to be added as a testing user to the app. after being added, you will be able to log in.**
+
+
