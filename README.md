@@ -16,10 +16,21 @@ Next, simply run
 yarn install
 yarn start
 ```
+**You will also need to either have your own API_KEY and CLIENT_ID, or can mail the email given below for it**
+
+
+### If using your own API key and CLIENT ID
+You will need to add your own .env file to this repository, in its root. The file should look like this
+```
+REACT_APP_API_KEY=<Your API key>
+REACT_APP_CLIENT_KEY=<Your client ID>
+
+```
+
 
 And the application will run!
 
-**Note that the version of yarn that is being used is 1.22.15. If there are any issues running this application with yarn, try downloading this version of yarn**
+**Note that the version of yarn that is being used is 1.22.15. If there are any issues running this application with yarn, try using that version of yarn**
 
 
-**Note that to use the application with your own email, you will have to be added to the project as a testing user, so please mail `tkumar994@gmail.com`, asking to be added as a testing user to the app. after being added, you will be able to log in**
+**Note that to use the application with your own email using my api key and client id, you will have to be added to the project as a testing user, so please mail `tkumar994@gmail.com`, asking to be added as a testing user to the app. after being added, you will be able to log in**

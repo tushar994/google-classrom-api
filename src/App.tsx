@@ -5,6 +5,9 @@ import { ListenOptions } from "net";
 
 declare const window: any;
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+const CLIENT_ID = process.env.REACT_APP_CLIENT_KEY;
+
 interface IProps {}
 
 interface IState {
@@ -116,9 +119,9 @@ class App extends React.Component<IProps, IState> {
   afterGapi() {
     window.gapi.client
       .init({
-        apiKey: "AIzaSyDywmi_MKWVW68Oi7Mc4vbIQNTKtbz1elc",
+        apiKey: API_KEY,
         clientId:
-          "117653827535-ghtenp7m08sff64phu7h9r9uo9u87shf.apps.googleusercontent.com",
+          CLIENT_ID,
         discoveryDocs: ["https://classroom.googleapis.com/$discovery/rest"],
         scope: [
           "https://www.googleapis.com/auth/classroom.coursework.me.readonly",
@@ -169,9 +172,9 @@ class App extends React.Component<IProps, IState> {
   handleAuthClick = () => {
     window.gapi.auth
       .authorize({
-        apiKey: "AIzaSyDywmi_MKWVW68Oi7Mc4vbIQNTKtbz1elc",
+        apiKey: API_KEY,
         client_id:
-          "117653827535-ghtenp7m08sff64phu7h9r9uo9u87shf.apps.googleusercontent.com",
+          CLIENT_ID,
         discoveryDocs: ["https://classroom.googleapis.com/$discovery/rest"],
         scope: [
           "https://www.googleapis.com/auth/classroom.coursework.me.readonly",
