@@ -8,6 +8,7 @@ declare const window: any;
 interface IProps {}
 
 interface IState {
+  loaded ?: boolean;
   signedIn?: boolean;
   courses?: Array<String>;
   errorText?: String;
@@ -17,6 +18,7 @@ class App extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      loaded: false,
       signedIn: false,
       courses: [],
       errorText: "",
@@ -148,6 +150,9 @@ class App extends React.Component<IProps, IState> {
     script.onload = () => {
       this.loadClientWhenGapiReady(script);
       console.log("yes");
+      this.setState({
+        loaded: true,
+      });
     };
     script.src = "https://apis.google.com/js/client.js";
     document.body.appendChild(script);
@@ -155,6 +160,7 @@ class App extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.initClient();
+    
   }
 
   /**
@@ -186,6 +192,11 @@ class App extends React.Component<IProps, IState> {
 
   render() {
     var output: any = "";
+
+    if(!this.state.loaded){
+      return ( <p>loading</p>);
+    }
+
     if (this.state.signedIn) {
       if (this.state.courses == []) {
         output = <p>No courses to show</p>;
@@ -201,6 +212,7 @@ class App extends React.Component<IProps, IState> {
     }
     return (
       <div className="App">
+        <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
         {this.state.signedIn ? (
           <p>signed in</p>
         ) : (
