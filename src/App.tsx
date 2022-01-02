@@ -33,16 +33,12 @@ class App extends React.Component<IProps, IState> {
    */
 
   loadClientWhenGapiReady = (script: any) => {
-    console.log("Trying To Load Client!");
-    console.log(script);
     if (script.getAttribute("gapi_processed")) {
-      console.log("Client is ready! Now you can access gapi. :)");
       if (window.location.hostname === "localhost") {
-        console.log("in here\n");
-        console.log(window.gapi.load("client:auth2", this.afterGapi()));
+        window.gapi.load("client:auth2", this.afterGapi())
       }
     } else {
-      console.log("Client wasn't ready, trying again in 100ms");
+      console.log("Gapi client wasn't ready, trying again in 100ms");
       setTimeout(() => {
         this.loadClientWhenGapiReady(script);
       }, 100);
@@ -53,7 +49,6 @@ class App extends React.Component<IProps, IState> {
    * no courses are found an appropriate message is printed.
    */
   listCourses = () => {
-    console.log("reached courses!!");
     window.gapi.client.classroom.courses
       .list({
         pageSize: 10,
@@ -64,7 +59,6 @@ class App extends React.Component<IProps, IState> {
             this.setState({
               errorText: response.result.message,
             });
-            console.log(response.result.message);
           }
           var courses = response.result.courses;
           let courseNames: Array<any> = [];
@@ -89,7 +83,6 @@ class App extends React.Component<IProps, IState> {
           this.setState({
             errorText: error,
           });
-          console.log(error);
         }
       );
   };
@@ -130,9 +123,7 @@ class App extends React.Component<IProps, IState> {
       })
       .then(() => {
         // Listen for sign-in state changes.
-        console.log("here");
-        // window.gapi.auth2.getAuthInstance().signIn();
-        console.log(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+        window.gapi.auth2.getAuthInstance().isSignedIn.get();
         window.gapi.auth2
           .getAuthInstance()
           .isSignedIn.listen(this.updateSigninStatus);
@@ -152,7 +143,6 @@ class App extends React.Component<IProps, IState> {
     const script = document.createElement("script");
     script.onload = () => {
       this.loadClientWhenGapiReady(script);
-      console.log("yes");
       this.setState({
         loaded: true,
       });
@@ -208,7 +198,6 @@ class App extends React.Component<IProps, IState> {
           output = this.state.courses.map((item, index) => (
             <li key={index}>{item}</li>
           ));
-          console.log(output);
           output.unshift(<h2>Your Classes are</h2>);
         }
       }
