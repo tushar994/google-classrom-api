@@ -15,6 +15,7 @@ interface IState {
   signedIn?: boolean;
   courses?: Array<String>;
   errorText?: String;
+  coursesWithWork ?: { [key: string] : Array<string> };
 }
 
 class App extends React.Component<IProps, IState> {
@@ -25,6 +26,7 @@ class App extends React.Component<IProps, IState> {
       signedIn: false,
       courses: [],
       errorText: "",
+      coursesWithWork : {},
     };
   }
 
@@ -48,13 +50,17 @@ class App extends React.Component<IProps, IState> {
    * Print the names of the first 10 courses the user has access to. If
    * no courses are found an appropriate message is printed.
    */
-  listCourses = () => {
+  listCourses =  () => {
+    this.setState({
+      loaded:false,
+      errorText:"",
+    })
     window.gapi.client.classroom.courses
       .list({
         pageSize: 10,
       })
       .then(
-        (response) => {
+        async (response) => {
           if (response.result.code == 403) {
             this.setState({
               errorText: response.result.message,
@@ -62,16 +68,35 @@ class App extends React.Component<IProps, IState> {
           }
           var courses = response.result.courses;
           let courseNames: Array<any> = [];
-
+          let coursesWithWork : {[key: string] : Array<string> } = {};
           if (courses.length > 0) {
             for (var i = 0; i < courses.length; i++) {
               var course = courses[i];
+              coursesWithWork[course.name] = [];
+
+              await window.gapi.client.classroom.courses.courseWork.list({courseId: course.id, pageSize : 10}).then((response2)=>{
+                if (response.result.code == 403) {
+                  this.setState({
+                    errorText: response.result.message,
+                  });
+                }
+                else{
+                  var courseWork = response2.result.courseWork;
+                  if(courseWork != null){
+                    for (var i = 0; i < courseWork.length; i++) {
+                      coursesWithWork[course.name].push(courseWork[i].title);
+                    }
+                  }
+                }
+              })
               courseNames.push(course.name);
             }
+
             this.setState({
-              errorText: "",
-              courses: courseNames,
-            });
+              loaded:true,
+              coursesWithWork:coursesWithWork,
+            })
+            
           } else {
             this.setState({
               errorText: "No courses found.",
@@ -119,6 +144,8 @@ class App extends React.Component<IProps, IState> {
         scope: [
           "https://www.googleapis.com/auth/classroom.coursework.me.readonly",
           "https://www.googleapis.com/auth/classroom.courses",
+          "https://www.googleapis.com/auth/classroom.coursework.me",
+          "https://www.googleapis.com/auth/classroom.coursework.students"
         ],
       })
       .then(() => {
@@ -169,6 +196,8 @@ class App extends React.Component<IProps, IState> {
         scope: [
           "https://www.googleapis.com/auth/classroom.coursework.me.readonly",
           "https://www.googleapis.com/auth/classroom.courses",
+          "https://www.googleapis.com/auth/classroom.coursework.me",
+          "https://www.googleapis.com/auth/classroom.coursework.students"
         ],
       })
       .then((authResult: any) => {
@@ -191,13 +220,28 @@ class App extends React.Component<IProps, IState> {
     }
 
     if (this.state.signedIn) {
-      if (this.state.courses == []) {
-        output = <p>No courses to show</p>;
-      } else {
-        if (this.state.courses != null) {
-          output = this.state.courses.map((item, index) => (
-            <li key={index}>{item}</li>
-          ));
+      if(this.state.errorText != ""){
+        output = <p>this.state.errorText</p>;
+      }
+      else {
+        if (this.state.coursesWithWork != null) {
+          output = [];
+          var index : number = 0;
+          Object.keys(this.state.coursesWithWork).map((key) => {
+            output.push(<p>Course is </p>)
+            output.push(<li key={index} style={{color: "blue"}}>{key}</li>);
+            // output.push(<ul>);
+            var out : any = [];
+            index +=1;
+            if (this.state.coursesWithWork != null && this.state.coursesWithWork[key].length!=0) {
+
+              output.push(<p  >CourseWork for above course is</p>)
+              out = this.state.coursesWithWork[key].map((item2,index2) => {
+                output.push(<li key={index} style={{color: "red"}}>{item2}</li>)
+                index+=1;
+              });
+            }
+          })
           output.unshift(<h2>Your Classes are</h2>);
         }
       }

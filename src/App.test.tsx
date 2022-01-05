@@ -8,4 +8,6 @@ test('Test Loading', async () => {
   render(<App />);
 
   expect(screen.getByText('loading')).toBeInTheDocument();
-}, 30000);
+});
+
+
