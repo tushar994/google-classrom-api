@@ -228,14 +228,14 @@ class App extends React.Component<IProps, IState> {
           output = [];
           var index : number = 0;
           Object.keys(this.state.coursesWithWork).map((key) => {
-            output.push(<p>Course is </p>)
+            output.push(<h3>Course is </h3>)
             output.push(<li key={index} style={{color: "blue"}}>{key}</li>);
             // output.push(<ul>);
             var out : any = [];
             index +=1;
             if (this.state.coursesWithWork != null && this.state.coursesWithWork[key].length!=0) {
 
-              output.push(<p  >CourseWork for above course is</p>)
+              output.push(<h4>CourseWork for above course is</h4>)
               out = this.state.coursesWithWork[key].map((item2,index2) => {
                 output.push(<li key={index} style={{color: "red"}}>{item2}</li>)
                 index+=1;
