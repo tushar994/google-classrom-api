@@ -220,8 +220,8 @@ class App extends React.Component<IProps, IState> {
     }
 
     if (this.state.signedIn) {
-      if(this.state.errorText != ""){
-        output = <p>this.state.errorText</p>;
+      if(this.state.courses == []){
+        output = <p>No courses to display</p>;
       }
       else {
         if (this.state.coursesWithWork != null) {
@@ -230,7 +230,6 @@ class App extends React.Component<IProps, IState> {
           Object.keys(this.state.coursesWithWork).map((key) => {
             output.push(<h3>Course is </h3>)
             output.push(<li key={index} style={{color: "blue"}}>{key}</li>);
-            // output.push(<ul>);
             var out : any = [];
             index +=1;
             if (this.state.coursesWithWork != null && this.state.coursesWithWork[key].length!=0) {
@@ -256,6 +255,7 @@ class App extends React.Component<IProps, IState> {
         )}
 
         {output}
+        {this.state.errorText}
       </div>
     );
   }
