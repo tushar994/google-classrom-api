@@ -4,7 +4,6 @@ This is a simple app that uses the google classroom api to authenticate your acc
 
 # How to run
 
-You can clone the repository by running
 
 
 Make sure you have yarn installed. If not, you can install it using npm
